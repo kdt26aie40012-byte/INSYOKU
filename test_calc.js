@@ -200,6 +200,39 @@ test("すべてのメニューが区切りに属し、区切りごとにまと�
   assert.strictEqual(total, C.MENU.length);
 });
 
+test("買い物かご：増減でき、0個になったら消える", () => {
+  let cart = C.changeCartQty({}, "maguro", 2);
+  cart = C.changeCartQty(cart, "maguro", 1);
+  assert.strictEqual(cart.maguro, 3);
+  cart = C.changeCartQty(cart, "maguro", -3);
+  assert.deepStrictEqual(cart, {});
+});
+
+test("買い物かご：上限は99個", () => {
+  const cart = C.changeCartQty({ tamago: 98 }, "tamago", 5);
+  assert.strictEqual(cart.tamago, C.MAX_QTY);
+});
+
+test("買い物かご：取消でメニューごと消える", () => {
+  const cart = C.removeFromCart({ maguro: 2, miso: 1 }, "maguro");
+  assert.deepStrictEqual(cart, { miso: 1 });
+  assert.strictEqual(C.cartCount({ maguro: 2, miso: 1 }), 3);
+});
+
+test("買い物かご：確定すると注文に足される", () => {
+  const order = C.confirmCart({ maguro: 1 }, { maguro: 2, miso: 1 });
+  assert.deepStrictEqual(order, { maguro: 3, miso: 1 });
+});
+
+test("買い物かご：確定前の中身は会計に含まれない", () => {
+  const s = memoryStorage();
+  C.saveOrder(s, { maguro: 1 });
+  C.saveCart(s, { otoro: 5 });
+  assert.strictEqual(C.calcBill(C.MENU, C.loadOrder(s)).total, 280);
+  C.clearCart(s);
+  assert.deepStrictEqual(C.loadCart(s), {});
+});
+
 test("金額の表示形式", () => {
   assert.strictEqual(C.formatYen(1580), "¥1,580");
 });

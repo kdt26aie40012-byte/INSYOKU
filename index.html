@@ -48,6 +48,7 @@
       </main>
 
       <aside class="side">
+        <button id="open-cart" class="btn btn-side btn-cart">買い物かご<span id="cart-badge" class="badge" hidden>0</span></button>
         <button id="open-history" class="btn btn-side">注文履歴</button>
         <button id="open-bill" class="btn btn-side btn-main">会計</button>
       </aside>
@@ -87,8 +88,36 @@
         <button type="button" id="qty-plus" class="btn btn-round">＋</button>
       </div>
       <div class="modal-actions">
-        <button type="button" id="qty-ok" class="btn btn-main">注文する</button>
+        <button type="button" id="qty-ok" class="btn btn-main">かごに入れる</button>
         <button type="button" class="btn btn-sub" data-close>やめる</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 買い物かご -->
+  <div id="cart-modal" class="modal" hidden>
+    <div class="modal-box">
+      <h2>買い物かご</h2>
+      <p class="modal-note">注文を確定するまでは、個数の変更や取り消しができます。</p>
+      <div id="cart-list"></div>
+      <p class="bill-total">合計 <strong id="cart-total"></strong></p>
+      <div class="modal-actions split">
+        <button type="button" id="cart-confirm" class="btn btn-main">注文を確定する</button>
+        <button type="button" class="btn btn-sub" data-close>メニューに戻る</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 注文確定の確認 -->
+  <div id="confirm-modal" class="modal" hidden>
+    <div class="modal-box">
+      <h2>この内容で注文しますか？</h2>
+      <p class="modal-note">確定後は取り消しできません。</p>
+      <div id="confirm-list"></div>
+      <p class="bill-total">合計 <strong id="confirm-total"></strong></p>
+      <div class="modal-actions split">
+        <button type="button" id="confirm-ok" class="btn btn-main">注文する</button>
+        <button type="button" id="confirm-back" class="btn btn-sub">かごに戻る</button>
       </div>
     </div>
   </div>
@@ -108,6 +137,7 @@
   <div id="bill-modal" class="modal" hidden>
     <div class="modal-box">
       <h2>お会計</h2>
+      <p id="bill-cart-note" class="warn" hidden>買い物かごに未確定の商品があります。会計には含まれません。</p>
       <div id="bill-list"></div>
       <p class="bill-total">合計金額 <strong id="bill-total"></strong></p>
       <div class="modal-actions split">

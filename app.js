@@ -39,6 +39,7 @@
     $("profile-error").textContent = "";
     document.querySelectorAll(".modal").forEach((m) => (m.hidden = true));
     renderMenu();
+    updateCartBadge();
   }
 
   // ---------- メニュー表示 ----------
@@ -196,11 +197,92 @@
   $("qty-minus").addEventListener("click", () => changeQty(-1));
   $("qty-plus").addEventListener("click", () => changeQty(1));
 
+  // 数量を決めたら、まず買い物かごに入れる（まだ注文はされない）
   $("qty-ok").addEventListener("click", () => {
-    const order = C.addToOrder(C.loadOrder(localStorage), state.selected.id, state.qty);
-    C.saveOrder(localStorage, order);
+    const cart = C.changeCartQty(C.loadCart(localStorage), state.selected.id, state.qty);
+    C.saveCart(localStorage, cart);
     $("qty-modal").hidden = true;
-    toast(`${state.selected.name} を ${state.qty} 個注文しました`);
+    updateCartBadge();
+    toast(`${state.selected.name} を ${state.qty} 個かごに入れました`);
+  });
+
+  // ---------- 買い物かご ----------
+
+  function updateCartBadge() {
+    const n = C.cartCount(C.loadCart(localStorage));
+    $("cart-badge").textContent = n;
+    $("cart-badge").hidden = n === 0;
+  }
+
+  function renderCart() {
+    const bill = C.calcBill(C.MENU, C.loadCart(localStorage));
+    const list = $("cart-list");
+    if (bill.items.length === 0) {
+      list.innerHTML = '<p class="empty">かごは空です。メニューの写真を押して追加してください。</p>';
+    } else {
+      list.innerHTML = `<table class="order-table">
+        <thead><tr><th>メニュー</th><th class="num">個数</th><th class="num">小計</th><th></th></tr></thead>
+        <tbody>${bill.items.map((it) => `
+          <tr data-id="${it.id}">
+            <td>${it.name}</td>
+            <td class="num"><span class="cart-qty">
+              <button type="button" class="btn btn-round" data-diff="-1" aria-label="減らす">−</button>
+              <span class="qty">${it.qty}</span>
+              <button type="button" class="btn btn-round" data-diff="1" aria-label="増やす"${it.qty >= C.MAX_QTY ? " disabled" : ""}>＋</button>
+            </span></td>
+            <td class="num">${C.formatYen(it.subtotal)}</td>
+            <td><button type="button" class="btn-remove" data-remove>取消</button></td>
+          </tr>`).join("")}</tbody></table>`;
+    }
+    $("cart-total").textContent = C.formatYen(bill.total);
+    $("cart-confirm").disabled = bill.items.length === 0;
+    updateCartBadge();
+  }
+
+  $("open-cart").addEventListener("click", () => {
+    renderCart();
+    $("cart-modal").hidden = false;
+  });
+
+  // かごの中の増減・取消
+  $("cart-list").addEventListener("click", (e) => {
+    const row = e.target.closest("tr[data-id]");
+    if (!row) return;
+    let cart = C.loadCart(localStorage);
+    if (e.target.closest("[data-diff]")) {
+      cart = C.changeCartQty(cart, row.dataset.id, Number(e.target.closest("[data-diff]").dataset.diff));
+    } else if (e.target.closest("[data-remove]")) {
+      cart = C.removeFromCart(cart, row.dataset.id);
+    } else {
+      return;
+    }
+    C.saveCart(localStorage, cart);
+    renderCart();
+  });
+
+  // 『注文を確定する』→ 確認画面 →『注文する』で注文データに記録し、かごを空にする
+  $("cart-confirm").addEventListener("click", () => {
+    const bill = C.calcBill(C.MENU, C.loadCart(localStorage));
+    if (bill.items.length === 0) return;
+    $("confirm-list").innerHTML = orderTableHtml(bill);
+    $("confirm-total").textContent = C.formatYen(bill.total);
+    $("cart-modal").hidden = true;
+    $("confirm-modal").hidden = false;
+  });
+
+  $("confirm-back").addEventListener("click", () => {
+    $("confirm-modal").hidden = true;
+    renderCart();
+    $("cart-modal").hidden = false;
+  });
+
+  $("confirm-ok").addEventListener("click", () => {
+    const cart = C.loadCart(localStorage);
+    C.saveOrder(localStorage, C.confirmCart(C.loadOrder(localStorage), cart));
+    C.clearCart(localStorage);
+    $("confirm-modal").hidden = true;
+    updateCartBadge();
+    toast(`${C.cartCount(cart)} 個の注文を確定しました`);
   });
 
   // ---------- 注文履歴・会計 ----------
@@ -225,6 +307,7 @@
     $("bill-list").innerHTML = orderTableHtml(bill);
     $("bill-total").textContent = C.formatYen(bill.total);
     $("bill-pay").disabled = bill.items.length === 0;
+    $("bill-cart-note").hidden = C.cartCount(C.loadCart(localStorage)) === 0;
     $("bill-modal").hidden = false;
   });
 
@@ -235,6 +318,7 @@
     $("thanks").hidden = false;
     setTimeout(() => {
       C.clearOrder(localStorage);
+      C.clearCart(localStorage);
       $("thanks").hidden = true;
       start();
     }, THANKS_MS);

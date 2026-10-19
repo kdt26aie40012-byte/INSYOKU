@@ -11,6 +11,8 @@
 })(typeof self !== "undefined" ? self : this, function () {
   const STORAGE_KEY_MENU = "hanazono_menu";
   const STORAGE_KEY_ORDER = "hanazono_order";
+  const STORAGE_KEY_CART = "hanazono_cart";
+  const MAX_QTY = 99;
 
   // メニューの区切り（表示順）
   const CATEGORIES = [
@@ -93,7 +95,7 @@
   }
 
   function validateQuantity(qty) {
-    return Number.isInteger(qty) && qty >= 1 && qty <= 99;
+    return Number.isInteger(qty) && qty >= 1 && qty <= MAX_QTY;
   }
 
   // ---------- おすすめ・アレルゲン ----------
@@ -149,6 +151,33 @@
     return next;
   }
 
+  // ---------- 買い物かご ----------
+  // かごも注文と同じ { メニューid: 個数 } の形。確定するまでは増減・削除ができる
+
+  // かごの個数を diff だけ増減する（0 になったら削除、上限は MAX_QTY）
+  function changeCartQty(cart, menuId, diff) {
+    const next = Object.assign({}, cart);
+    const qty = Math.min((next[menuId] || 0) + diff, MAX_QTY);
+    if (qty > 0) next[menuId] = qty;
+    else delete next[menuId];
+    return next;
+  }
+
+  function removeFromCart(cart, menuId) {
+    const next = Object.assign({}, cart);
+    delete next[menuId];
+    return next;
+  }
+
+  function cartCount(cart) {
+    return Object.values(cart).reduce((n, q) => n + q, 0);
+  }
+
+  // かごの中身を注文に確定する（同じメニューは個数を足す）
+  function confirmCart(order, cart) {
+    return Object.keys(cart).reduce((o, id) => (cart[id] > 0 ? addToOrder(o, id, cart[id]) : o), order);
+  }
+
   // 注文データから明細（名前・単価・個数・小計）と合計金額を算出する
   function calcBill(menu, order) {
     const items = Object.keys(order)
@@ -172,13 +201,17 @@
     storage.setItem(STORAGE_KEY_MENU, JSON.stringify(menu.map((m) => ({ name: m.name, price: m.price }))));
   }
 
-  function loadOrder(storage) {
+  function loadJson(storage, key) {
     try {
-      const data = JSON.parse(storage.getItem(STORAGE_KEY_ORDER) || "{}");
+      const data = JSON.parse(storage.getItem(key) || "{}");
       return data && typeof data === "object" ? data : {};
     } catch (e) {
       return {};
     }
+  }
+
+  function loadOrder(storage) {
+    return loadJson(storage, STORAGE_KEY_ORDER);
   }
 
   function saveOrder(storage, order) {
@@ -189,11 +222,23 @@
     storage.removeItem(STORAGE_KEY_ORDER);
   }
 
+  function loadCart(storage) {
+    return loadJson(storage, STORAGE_KEY_CART);
+  }
+
+  function saveCart(storage, cart) {
+    storage.setItem(STORAGE_KEY_CART, JSON.stringify(cart));
+  }
+
+  function clearCart(storage) {
+    storage.removeItem(STORAGE_KEY_CART);
+  }
+
   return {
-    MENU, CATEGORIES, ALLERGENS, GENDERS, STORAGE_KEY_MENU, STORAGE_KEY_ORDER,
+    MENU, CATEGORIES, ALLERGENS, GENDERS, STORAGE_KEY_MENU, STORAGE_KEY_ORDER, STORAGE_KEY_CART, MAX_QTY,
     isAllowedAgeTyping, validateAge, validateGender, validateQuantity,
     ageGroup, getRecommendations, excludeAllergens, profitRate, groupByCategory,
-    addToOrder, calcBill, formatYen,
-    saveMenu, loadOrder, saveOrder, clearOrder,
+    addToOrder, changeCartQty, removeFromCart, cartCount, confirmCart, calcBill, formatYen,
+    saveMenu, loadOrder, saveOrder, clearOrder, loadCart, saveCart, clearCart,
   };
 });

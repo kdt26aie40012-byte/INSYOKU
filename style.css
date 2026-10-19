@@ -129,6 +129,18 @@ body {
 .btn-sub { background: #efe7de; color: var(--ink); }
 .btn-side { padding: 1.2rem 0.5rem; font-size: 1.1rem; background: #efe7de; }
 .btn-side.btn-main { background: var(--accent); }
+.btn-cart { position: relative; }
+.badge {
+  position: absolute; top: -8px; right: -8px; min-width: 1.6rem; height: 1.6rem; padding: 0 0.4rem;
+  border-radius: 999px; background: var(--accent); color: #fff; font-size: 0.85rem;
+  display: flex; align-items: center; justify-content: center;
+}
+.cart-qty { display: inline-flex; align-items: center; gap: 0.4rem; }
+.cart-qty .btn-round { width: 32px; height: 32px; font-size: 1rem; }
+.cart-qty .qty { min-width: 2ch; text-align: center; }
+.btn-remove { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 0.85rem; text-decoration: underline; }
+.modal-note { color: var(--muted); font-size: 0.9rem; margin-top: -0.4rem; }
+.warn { color: #d32f2f; font-size: 0.9rem; }
 .btn-round { width: 48px; height: 48px; border-radius: 50%; padding: 0; font-size: 1.4rem; background: #efe7de; }
 
 /* モーダル */
