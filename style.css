@@ -1,0 +1,167 @@
+:root {
+  --bg: #fbf7f0;
+  --panel: #ffffff;
+  --ink: #3a2e2a;
+  --muted: #8a7d75;
+  --accent: #b5485a;
+  --accent-dark: #8f3444;
+  --line: #e8ded3;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Hiragino Sans", "Yu Gothic", "Meiryo", sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+[hidden] { display: none !important; }
+
+/* 全画面表示（店名・お礼） */
+.fullscreen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--accent);
+  color: #fff;
+  z-index: 100;
+}
+.shop-sub { text-align: center; font-size: 1.5rem; letter-spacing: 0.5em; margin: 0 0 0.5rem; opacity: 0.85; }
+.shop-name { font-size: clamp(4rem, 15vw, 9rem); letter-spacing: 0.3em; margin: 0; }
+.thanks-text { font-size: clamp(1.5rem, 5vw, 3rem); margin: 0 1rem; text-align: center; }
+
+/* ヘッダー */
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1.25rem;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+.header h1 { margin: 0; color: var(--accent); letter-spacing: 0.2em; }
+.header-sub { color: var(--muted); letter-spacing: 0.2em; margin-left: -0.5rem; }
+.reco-banner {
+  display: flex; align-items: center; gap: 0.75rem;
+  margin-left: auto; color: var(--muted); font-size: 0.95rem;
+}
+
+/* レイアウト：メニュー＋右端のボタン */
+.layout { display: flex; gap: 1rem; padding: 1rem 1.25rem; }
+.menu-area { flex: 1; min-width: 0; }
+.side {
+  width: 140px; display: flex; flex-direction: column; gap: 0.75rem;
+  position: sticky; top: 1rem; align-self: flex-start;
+}
+
+.tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+.tab {
+  border: 1px solid var(--line); background: var(--panel); color: var(--ink);
+  padding: 0.5rem 1.1rem; border-radius: 999px; cursor: pointer; font-size: 1rem;
+}
+.tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1rem;
+}
+.card {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+  overflow: hidden; text-align: left; padding: 0; cursor: pointer; font: inherit; color: inherit;
+  display: flex; flex-direction: column; justify-content: flex-start;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
+.thumb-wrap { position: relative; }
+.allergen-badge {
+  position: absolute; top: 6px; left: 6px; max-width: calc(100% - 12px);
+  background: rgba(255, 255, 255, 0.92); color: #d32f2f; font-weight: bold; font-size: 0.85rem;
+  padding: 0.15rem 0.5rem; border-radius: 6px;
+}
+.allergy-checks {
+  border: 1px solid var(--line); border-radius: 10px; background: var(--panel);
+  padding: 0.6rem 1rem 0.9rem; margin: 0 0 1rem;
+}
+.allergy-checks legend { padding: 0 0.4rem; font-weight: bold; }
+.allergy-list { display: flex; flex-wrap: wrap; gap: 0.4rem 0.6rem; }
+.soy-note { color: #d32f2f; font-weight: bold; margin: 0.7rem 0 0; }
+.check {
+  display: flex; align-items: center; gap: 0.3rem; cursor: pointer;
+  border: 1px solid var(--line); border-radius: 999px; padding: 0.3rem 0.8rem;
+}
+.check:has(input:checked) { background: #fde8ea; border-color: var(--accent); color: var(--accent); }
+.thumb {
+  display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: #eee;
+}
+.thumb.big { width: 260px; max-width: 100%; margin: 0 auto; border-radius: 12px; }
+.card-body { padding: 0.6rem 0.8rem 0.8rem; }
+.card-name { font-weight: bold; }
+.card-price { color: var(--accent); margin-top: 0.2rem; }
+.card-allergen { font-size: 0.8rem; color: var(--muted); margin-top: 0.3rem; }
+.empty { color: var(--muted); }
+.note { color: var(--muted); font-size: 0.85rem; margin: -0.4rem 0 0.8rem; }
+.credit { color: var(--muted); font-size: 0.75rem; margin-top: 1.5rem; }
+
+/* ボタン */
+.btn {
+  border: none; border-radius: 8px; padding: 0.7rem 1.2rem; font-size: 1rem;
+  cursor: pointer; font-family: inherit;
+}
+.btn-main { background: var(--accent); color: #fff; }
+.btn-main:hover { background: var(--accent-dark); }
+.btn-main:disabled { background: #ccc; cursor: not-allowed; }
+.btn-sub { background: #efe7de; color: var(--ink); }
+.btn-side { padding: 1.2rem 0.5rem; font-size: 1.1rem; background: #efe7de; }
+.btn-side.btn-main { background: var(--accent); }
+.btn-round { width: 48px; height: 48px; border-radius: 50%; padding: 0; font-size: 1.4rem; background: #efe7de; }
+
+/* モーダル */
+.modal {
+  position: fixed; inset: 0; background: rgba(40, 25, 20, 0.45);
+  display: flex; align-items: center; justify-content: center; z-index: 50; padding: 1rem;
+}
+.modal-box {
+  background: var(--panel); border-radius: 14px; padding: 1.5rem;
+  width: min(440px, 100%); max-height: 90vh; overflow-y: auto; text-align: center;
+}
+.modal-box h2 { margin-top: 0.5rem; }
+.modal-actions { display: flex; gap: 0.75rem; justify-content: center; margin-top: 1.25rem; }
+.modal-actions.split { justify-content: space-between; }
+.modal-actions.split .btn { flex: 1; }
+
+.field { display: block; text-align: left; margin: 0.75rem 0; border: none; padding: 0; }
+.field input[type="text"] {
+  display: block; width: 100%; margin-top: 0.4rem; padding: 0.6rem;
+  font-size: 1rem; border: 1px solid var(--line); border-radius: 8px;
+}
+.field legend { margin-bottom: 0.4rem; }
+.field label { margin-right: 1rem; }
+.error { color: var(--accent); min-height: 1.2em; margin: 0.5rem 0 0; }
+
+.qty-control { display: flex; align-items: center; justify-content: center; gap: 1.25rem; }
+#qty-value { font-size: 1.8rem; min-width: 2ch; }
+
+.order-table { width: 100%; border-collapse: collapse; text-align: left; }
+.order-table th, .order-table td { padding: 0.4rem; border-bottom: 1px solid var(--line); }
+.order-table td.num, .order-table th.num { text-align: right; }
+.bill-total { font-size: 1.2rem; text-align: right; }
+.bill-total strong { color: var(--accent); font-size: 1.5rem; }
+
+.toast {
+  position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+  background: var(--ink); color: #fff; padding: 0.7rem 1.3rem; border-radius: 999px; z-index: 60;
+}
+
+@media (max-width: 640px) {
+  .layout { flex-direction: column-reverse; }
+  .side { width: 100%; flex-direction: row; position: static; }
+  .side .btn { flex: 1; }
+  .header-sub { color: var(--muted); letter-spacing: 0.2em; margin-left: -0.5rem; }
+.reco-banner { margin-left: 0; }
+}

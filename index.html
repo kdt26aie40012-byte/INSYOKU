@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>すし 花園 メニュー・オーダー</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- 起動時の店名表示 -->
+  <div id="splash" class="fullscreen">
+    <div>
+      <p class="shop-sub">すし処</p>
+      <h1 class="shop-name">花園</h1>
+    </div>
+  </div>
+
+  <!-- 会計完了時の表示 -->
+  <div id="thanks" class="fullscreen" hidden>
+    <p class="thanks-text">ご来店ありがとうございました</p>
+  </div>
+
+  <div id="main" hidden>
+    <header class="header">
+      <h1>花園</h1>
+      <span class="header-sub">すし処</span>
+      <div id="reco-banner" class="reco-banner">
+        <span>年齢・性別を入力するとおすすめを表示できます</span>
+        <button id="open-profile" class="btn btn-sub">入力する</button>
+      </div>
+    </header>
+
+    <div class="layout">
+      <main class="menu-area">
+        <nav class="tabs" id="tabs">
+          <button class="tab" data-tab="reco" id="tab-reco" hidden>おすすめ</button>
+          <button class="tab active" data-tab="all">すべて</button>
+          <button class="tab" data-tab="free">アレルゲンなし</button>
+        </nav>
+        <p class="note">すしの価格は1皿（2貫）の税込価格です。</p>
+        <fieldset id="allergy-checks" class="allergy-checks" hidden>
+          <legend>アレルギーのある食材を選択してください（含まれるメニューを除外します）</legend>
+          <div id="allergy-list" class="allergy-list"></div>
+          <p id="soy-note" class="soy-note" hidden>※しょうゆには大豆が含まれます。しょうゆのご使用にご注意ください。</p>
+        </fieldset>
+        <div id="menu-grid" class="menu-grid"></div>
+        <p class="credit">写真：Wikimedia Commons（撮影者・ライセンスは images/CREDITS.md）</p>
+      </main>
+
+      <aside class="side">
+        <button id="open-history" class="btn btn-side">注文履歴</button>
+        <button id="open-bill" class="btn btn-side btn-main">会計</button>
+      </aside>
+    </div>
+  </div>
+
+  <!-- 年齢・性別入力 -->
+  <div id="profile-modal" class="modal" hidden>
+    <form id="profile-form" class="modal-box" novalidate>
+      <h2>おすすめ表示</h2>
+      <label class="field">年齢（数字、または答えたくない場合は『NO』）
+        <input id="age-input" type="text" inputmode="text" autocomplete="off" placeholder="例：25 / NO">
+      </label>
+      <fieldset class="field">
+        <legend>性別</legend>
+        <label><input type="radio" name="gender" value="男性"> 男性</label>
+        <label><input type="radio" name="gender" value="女性"> 女性</label>
+        <label><input type="radio" name="gender" value="NO"> NO</label>
+      </fieldset>
+      <p id="profile-error" class="error" aria-live="polite"></p>
+      <div class="modal-actions">
+        <button type="submit" class="btn btn-main">おすすめを見る</button>
+        <button type="button" class="btn btn-sub" data-close>閉じる</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- 数量指定 -->
+  <div id="qty-modal" class="modal" hidden>
+    <div class="modal-box">
+      <img id="qty-thumb" class="thumb big" alt="">
+      <h2 id="qty-name"></h2>
+      <p id="qty-price"></p>
+      <div class="qty-control">
+        <button type="button" id="qty-minus" class="btn btn-round">−</button>
+        <span id="qty-value">1</span>
+        <button type="button" id="qty-plus" class="btn btn-round">＋</button>
+      </div>
+      <div class="modal-actions">
+        <button type="button" id="qty-ok" class="btn btn-main">注文する</button>
+        <button type="button" class="btn btn-sub" data-close>やめる</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 注文履歴 -->
+  <div id="history-modal" class="modal" hidden>
+    <div class="modal-box">
+      <h2>注文履歴</h2>
+      <div id="history-list"></div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-sub" data-close>閉じる</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 会計 -->
+  <div id="bill-modal" class="modal" hidden>
+    <div class="modal-box">
+      <h2>お会計</h2>
+      <div id="bill-list"></div>
+      <p class="bill-total">合計金額 <strong id="bill-total"></strong></p>
+      <div class="modal-actions split">
+        <button type="button" id="bill-pay" class="btn btn-main">会計に進む</button>
+        <button type="button" class="btn btn-sub" data-close>食事に戻る</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <script src="calc.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
