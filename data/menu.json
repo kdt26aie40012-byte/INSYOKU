@@ -1,111 +1,470 @@
 {
   "updatedAt": "2026-10-19",
-  "note": "allergens は商品そのものに含まれるアレルゲン、mayContain は調理器具の共用などによる混入のおそれ。仕入れ品（醤油・マヨネーズ・カニカマ・たれ等）のアレルゲンは実際の商品の表示で必ず確認すること。",
-  "condiments": [
-    { "id": "shoyu", "name": "醤油", "allergens": ["wheat", "soybean"] },
-    { "id": "salt", "name": "塩", "allergens": [] }
-  ],
+  "note": "calc.js の MENU と同じ内容。価格は1皿（2貫）の税込。cost は原価、profitRate は利益率で、子供向け（kids）は薄利多売、大人向け（adult）は利益を多く取る設定。たれ・ポン酢・醤油のアレルゲンは対象外（お客さん自身に注意してもらう）。",
+  "targetsLegend": {
+    "kids": "子供向け（15歳以下）",
+    "adult": "大人向け（16歳以上）",
+    "男性": "男性向け（肉）",
+    "女性": "女性向け（さわやかなもの）"
+  },
   "categories": [
-    { "id": "nigiri", "name": "握り" },
-    { "id": "gunkan", "name": "軍艦" },
-    { "id": "maki", "name": "巻物" },
-    { "id": "special", "name": "特選・創作" },
-    { "id": "veggie", "name": "野菜握り" },
-    { "id": "side", "name": "一品・サイド" },
-    { "id": "soup", "name": "汁物" }
+    {
+      "id": "maguro",
+      "name": "まぐろ"
+    },
+    {
+      "id": "nigiri",
+      "name": "にぎり"
+    },
+    {
+      "id": "gunkan",
+      "name": "軍艦・巻物"
+    },
+    {
+      "id": "special",
+      "name": "創作にぎり"
+    },
+    {
+      "id": "side",
+      "name": "サイド"
+    }
   ],
   "items": [
-    { "id": "maguro-akami", "name": "まぐろ赤身", "category": "nigiri", "allergens": [], "mayContain": [], "condiment": "shoyu" },
-    { "id": "chutoro", "name": "中トロ", "category": "nigiri", "allergens": [], "mayContain": [], "condiment": "shoyu" },
-    { "id": "otoro", "name": "大トロ", "category": "nigiri", "allergens": [], "mayContain": [], "condiment": "shoyu" },
-    { "id": "hamachi", "name": "はまち", "category": "nigiri", "allergens": [], "mayContain": [], "condiment": "shoyu" },
-    { "id": "buri", "name": "ぶり", "category": "nigiri", "season": "winter", "allergens": [], "mayContain": [], "condiment": "shoyu" },
-    { "id": "madai", "name": "真鯛", "category": "nigiri", "allergens": [], "mayContain": [], "condiment": "shoyu" },
-    { "id": "kohada", "name": "こはだ", "category": "nigiri", "allergens": [], "mayContain": [], "condiment": "shoyu" },
-    { "id": "akagai", "name": "赤貝", "category": "nigiri", "allergens": [], "mayContain": [], "condiment": "shoyu" },
-    { "id": "hotate", "name": "ほたて", "category": "nigiri", "allergens": [], "mayContain": [], "condiment": "shoyu" },
-    { "id": "aburi-hotate", "name": "炙りほたて", "category": "nigiri", "allergens": [], "mayContain": [], "condiment": "shoyu" },
-    { "id": "aburi-engawa", "name": "炙りえんがわ", "category": "nigiri", "allergens": [], "mayContain": [], "condiment": "shoyu" },
-    { "id": "salmon", "name": "サーモン", "category": "nigiri", "allergens": ["salmon"], "mayContain": [], "condiment": "shoyu" },
-    { "id": "aburi-salmon", "name": "炙りサーモン", "category": "nigiri", "allergens": ["salmon"], "mayContain": [], "condiment": "shoyu" },
-    { "id": "harasu", "name": "炙りハラス", "category": "nigiri", "allergens": ["salmon"], "mayContain": [], "condiment": "shoyu" },
-    { "id": "salmon-cheese", "name": "サーモンチーズ炙り", "category": "nigiri", "allergens": ["salmon", "milk"], "mayContain": [], "condiment": null },
-    { "id": "shime-saba", "name": "しめさば", "category": "nigiri", "allergens": ["mackerel"], "mayContain": [], "condiment": "shoyu" },
-    { "id": "ebi", "name": "えび", "category": "nigiri", "allergens": ["shrimp"], "mayContain": [], "condiment": "shoyu" },
-    { "id": "amaebi", "name": "甘えび", "category": "nigiri", "allergens": ["shrimp"], "mayContain": [], "condiment": "shoyu" },
-    { "id": "botan-ebi", "name": "ぼたんえび", "category": "nigiri", "allergens": ["shrimp"], "mayContain": [], "condiment": "shoyu" },
-    { "id": "kani", "name": "かに", "category": "nigiri", "allergens": ["crab"], "mayContain": [], "condiment": "shoyu" },
-    { "id": "ika", "name": "いか", "category": "nigiri", "allergens": ["squid"], "mayContain": [], "condiment": "shoyu" },
-    { "id": "geso", "name": "げそ（煮つめ）", "category": "nigiri", "allergens": ["squid", "wheat", "soybean"], "mayContain": [], "condiment": null },
-    { "id": "ika-ten", "name": "いか天", "category": "nigiri", "allergens": ["squid", "wheat", "egg"], "mayContain": [], "condiment": "shoyu" },
-    { "id": "awabi", "name": "あわび", "category": "nigiri", "allergens": ["abalone"], "mayContain": [], "condiment": "shoyu" },
-    { "id": "tamago", "name": "玉子焼き", "category": "nigiri", "allergens": ["egg", "wheat", "soybean"], "mayContain": [], "condiment": null },
-    { "id": "anago", "name": "煮穴子一本握り", "category": "nigiri", "allergens": ["wheat", "soybean"], "mayContain": [], "condiment": null },
-    { "id": "aburi-gyu", "name": "炙り牛", "category": "nigiri", "allergens": ["beef"], "mayContain": [], "condiment": "salt" },
-    { "id": "roast-beef", "name": "ローストビーフ", "category": "nigiri", "allergens": ["beef", "wheat", "soybean"], "mayContain": [], "condiment": null },
-    { "id": "buta-shabu", "name": "豚しゃぶ（ポン酢）", "category": "nigiri", "allergens": ["pork", "wheat", "soybean"], "mayContain": [], "condiment": null },
-    { "id": "nama-ham", "name": "生ハム握り", "category": "nigiri", "allergens": ["pork"], "mayContain": [], "condiment": null,
-      "storage": "開封後は乾燥と脂の酸化が早い。ラップを密着させて冷蔵し、2〜3日で使い切る。" },
-
-    { "id": "negitoro", "name": "ねぎとろ", "category": "gunkan", "allergens": [], "mayContain": [], "condiment": "shoyu",
-      "note": "自家製の場合。市販のねぎとろは大豆などを含むことがあるため表示を確認する。" },
-    { "id": "uni", "name": "うに", "category": "gunkan", "allergens": [], "mayContain": [], "condiment": "shoyu" },
-    { "id": "ikura", "name": "いくら醤油漬け", "category": "gunkan", "allergens": ["salmon_roe", "wheat", "soybean"], "mayContain": [], "condiment": null },
-    { "id": "kani-miso", "name": "かに味噌", "category": "gunkan", "allergens": ["crab"], "mayContain": [], "condiment": null },
-    { "id": "kani-salad", "name": "かにサラダ", "category": "gunkan", "allergens": ["crab", "egg", "soybean"], "mayContain": [], "condiment": null },
-    { "id": "salad", "name": "サラダ（カニカマ）", "category": "gunkan", "allergens": ["egg", "wheat", "soybean"], "mayContain": ["crab"], "condiment": null },
-    { "id": "tuna-mayo", "name": "ツナマヨ", "category": "gunkan", "allergens": ["egg", "soybean"], "mayContain": [], "condiment": null },
-    { "id": "shiokara", "name": "いか塩辛", "category": "gunkan", "allergens": ["squid"], "mayContain": [], "condiment": null },
-    { "id": "yamakake", "name": "まぐろ山かけ", "category": "gunkan", "allergens": ["yam"], "mayContain": [], "condiment": "shoyu" },
-    { "id": "tororo", "name": "とろろ", "category": "gunkan", "allergens": ["yam"], "mayContain": [], "condiment": "shoyu" },
-
-    { "id": "ebi-ten-maki", "name": "えび天巻き", "category": "maki", "allergens": ["shrimp", "wheat", "egg"], "mayContain": [], "condiment": "shoyu" },
-    { "id": "natto-maki", "name": "納豆巻き", "category": "maki", "allergens": ["soybean", "wheat"], "mayContain": [], "condiment": "shoyu" },
-    { "id": "california-roll", "name": "カリフォルニアロール", "category": "maki", "allergens": ["egg", "wheat", "soybean", "sesame"], "mayContain": ["crab"], "condiment": "shoyu" },
-    { "id": "cha-soba-maki", "name": "茶そば巻き", "category": "maki", "allergens": ["buckwheat", "wheat", "soybean"], "mayContain": [], "condiment": null },
-    { "id": "inari", "name": "いなり", "category": "maki", "allergens": ["soybean", "wheat"], "mayContain": [], "condiment": null },
-    { "id": "saba-bou", "name": "さば棒寿司", "category": "maki", "allergens": ["mackerel"], "mayContain": [], "condiment": "shoyu" },
-    { "id": "battera", "name": "ばってら", "category": "maki", "allergens": ["mackerel"], "mayContain": [], "condiment": "shoyu" },
-
-    { "id": "nama-ham-ichijiku", "name": "生ハムといちじくの握り", "category": "special", "allergens": ["pork"], "mayContain": [], "condiment": null,
-      "storage": "生ハムは開封後ラップを密着させて冷蔵し、2〜3日で使い切る。" },
-    { "id": "nama-ham-kaki", "name": "生ハム×柿の握り", "category": "special", "season": "autumn", "allergens": ["pork"], "mayContain": [], "condiment": null,
-      "storage": "柿は切ると変色するため注文を受けてから切る。" },
-    { "id": "iberico-aburi", "name": "イベリコ豚の炙り握り", "category": "special", "allergens": ["pork"], "mayContain": [], "condiment": "salt",
-      "storage": "豚肉は生食不可。低温調理で中心まで加熱してから表面を炙る。" },
-    { "id": "aburi-wagyu-gunkan", "name": "炙り和牛軍艦", "category": "special", "allergens": ["beef", "wheat", "soybean"], "mayContain": [], "condiment": null,
-      "storage": "生食用の規格基準を満たさない牛肉のため、必ず炙って提供する。" },
-    { "id": "basashi", "name": "馬刺し握り", "category": "special", "allergens": [], "mayContain": [], "condiment": "shoyu",
-      "storage": "寄生虫（ザルコシスティス）対策として冷凍処理済みのものを仕入れる。" },
-    { "id": "foie-gras", "name": "フォアグラの炙り握り", "category": "special", "allergens": ["wheat", "soybean"], "mayContain": [], "condiment": null,
-      "storage": "冷凍保管。半解凍で切ると崩れにくい。" },
-    { "id": "kamo-orange", "name": "鴨ロース握り オレンジソース", "category": "special", "allergens": ["orange"], "mayContain": [], "condiment": null,
-      "storage": "低温調理で中心温度を管理する。" },
-    { "id": "caviar", "name": "キャビア軍艦", "category": "special", "allergens": [], "mayContain": [], "condiment": null,
-      "storage": "−2〜2℃で保管。開封後は数日以内に使い切る。" },
-    { "id": "karasumi", "name": "からすみ大根の握り", "category": "special", "allergens": [], "mayContain": [], "condiment": null,
-      "storage": "真空パックで冷蔵保管。" },
-    { "id": "shirako", "name": "白子ポン酢軍艦", "category": "special", "season": "winter", "allergens": ["wheat", "soybean"], "mayContain": [], "condiment": null,
-      "storage": "鮮度が落ちやすいため仕入れ当日に使い切る。ポン酢の柑橘にオレンジを含むか表示を確認する。" },
-    { "id": "ankimo", "name": "あん肝の握り", "category": "special", "allergens": ["wheat", "soybean"], "mayContain": [], "condiment": null,
-      "storage": "蒸してから冷凍保管できる。" },
-    { "id": "otoro-truffle", "name": "大トロのトリュフ塩炙り", "category": "special", "allergens": [], "mayContain": [], "condiment": "salt",
-      "storage": "トリュフ塩は湿気を嫌うため密閉保管する。" },
-    { "id": "smoked-salmon", "name": "自家製燻製サーモン", "category": "special", "allergens": ["salmon"], "mayContain": [], "condiment": "shoyu",
-      "storage": "冷燻のため塩分と温度を管理する。" },
-
-    { "id": "yaki-nasu", "name": "焼きなすの握り", "category": "veggie", "allergens": [], "mayContain": [], "condiment": "salt" },
-    { "id": "myoga", "name": "みょうが甘酢漬けの握り", "category": "veggie", "allergens": [], "mayContain": [], "condiment": "salt" },
-    { "id": "tomato", "name": "トマトの握り", "category": "veggie", "allergens": [], "mayContain": [], "condiment": "salt" },
-
-    { "id": "kaisendon", "name": "海鮮丼", "category": "side", "allergens": ["salmon", "salmon_roe", "shrimp", "squid", "egg", "wheat", "soybean"], "mayContain": [], "condiment": "shoyu",
-      "note": "まぐろ・サーモン・いくら・えび・いか・玉子のせ。" },
-    { "id": "chawanmushi", "name": "茶碗蒸し", "category": "side", "allergens": ["egg", "chicken", "shrimp", "wheat", "soybean"], "mayContain": [], "condiment": null },
-    { "id": "awabi-sakamushi", "name": "あわびの酒蒸し", "category": "side", "allergens": ["abalone"], "mayContain": [], "condiment": null },
-    { "id": "nikogori", "name": "煮こごり", "category": "side", "allergens": ["gelatin", "wheat", "soybean"], "mayContain": [], "condiment": null },
-    { "id": "edamame", "name": "枝豆", "category": "side", "allergens": ["soybean"], "mayContain": [], "condiment": null },
-
-    { "id": "miso-shiru", "name": "味噌汁", "category": "soup", "allergens": ["soybean"], "mayContain": [], "condiment": null },
-    { "id": "ebi-atama-jiru", "name": "えびの頭の味噌汁", "category": "soup", "allergens": ["shrimp", "soybean"], "mayContain": [], "condiment": null }
+    {
+      "id": "maguro",
+      "name": "まぐろ赤身",
+      "category": "maguro",
+      "price": 280,
+      "cost": 90,
+      "profitRate": 0.68,
+      "allergens": [],
+      "targets": [
+        "adult"
+      ],
+      "image": "images/maguro.jpg"
+    },
+    {
+      "id": "chutoro",
+      "name": "中トロ",
+      "category": "maguro",
+      "price": 480,
+      "cost": 160,
+      "profitRate": 0.67,
+      "allergens": [],
+      "targets": [
+        "adult"
+      ],
+      "image": "images/chutoro.jpg"
+    },
+    {
+      "id": "otoro",
+      "name": "大トロ",
+      "category": "maguro",
+      "price": 720,
+      "cost": 240,
+      "profitRate": 0.67,
+      "allergens": [],
+      "targets": [
+        "adult"
+      ],
+      "image": "images/otoro.jpg"
+    },
+    {
+      "id": "negitoro_gunkan",
+      "name": "ねぎとろ軍艦",
+      "category": "maguro",
+      "price": 160,
+      "cost": 90,
+      "profitRate": 0.44,
+      "allergens": [],
+      "targets": [
+        "kids"
+      ],
+      "image": "images/negitoro_gunkan.jpg"
+    },
+    {
+      "id": "salmon",
+      "name": "サーモン",
+      "category": "nigiri",
+      "price": 180,
+      "cost": 100,
+      "profitRate": 0.44,
+      "allergens": [
+        "サケ"
+      ],
+      "targets": [
+        "kids"
+      ],
+      "image": "images/salmon.jpg"
+    },
+    {
+      "id": "ebi",
+      "name": "えび",
+      "category": "nigiri",
+      "price": 180,
+      "cost": 100,
+      "profitRate": 0.44,
+      "allergens": [
+        "エビ"
+      ],
+      "targets": [
+        "kids"
+      ],
+      "image": "images/ebi.jpg"
+    },
+    {
+      "id": "tamago",
+      "name": "玉子",
+      "category": "nigiri",
+      "price": 120,
+      "cost": 70,
+      "profitRate": 0.42,
+      "allergens": [
+        "タマゴ"
+      ],
+      "targets": [
+        "kids"
+      ],
+      "image": "images/tamago.jpg"
+    },
+    {
+      "id": "hamachi",
+      "name": "はまち",
+      "category": "nigiri",
+      "price": 260,
+      "cost": 85,
+      "profitRate": 0.67,
+      "allergens": [],
+      "targets": [
+        "adult"
+      ],
+      "image": "images/hamachi.jpg"
+    },
+    {
+      "id": "buri",
+      "name": "ぶり",
+      "category": "nigiri",
+      "price": 300,
+      "cost": 95,
+      "profitRate": 0.68,
+      "allergens": [],
+      "targets": [
+        "adult"
+      ],
+      "image": "images/buri.jpg",
+      "season": "winter"
+    },
+    {
+      "id": "madai",
+      "name": "真鯛",
+      "category": "nigiri",
+      "price": 300,
+      "cost": 95,
+      "profitRate": 0.68,
+      "allergens": [],
+      "targets": [
+        "adult",
+        "女性"
+      ],
+      "image": "images/madai.jpg"
+    },
+    {
+      "id": "kohada",
+      "name": "こはだ",
+      "category": "nigiri",
+      "price": 240,
+      "cost": 75,
+      "profitRate": 0.69,
+      "allergens": [],
+      "targets": [
+        "adult",
+        "女性"
+      ],
+      "image": "images/kohada.jpg"
+    },
+    {
+      "id": "engawa",
+      "name": "えんがわ（炙り）",
+      "category": "nigiri",
+      "price": 300,
+      "cost": 95,
+      "profitRate": 0.68,
+      "allergens": [],
+      "targets": [
+        "adult"
+      ],
+      "image": "images/engawa.jpg"
+    },
+    {
+      "id": "anago",
+      "name": "煮穴子",
+      "category": "nigiri",
+      "price": 380,
+      "cost": 125,
+      "profitRate": 0.67,
+      "allergens": [],
+      "targets": [
+        "adult"
+      ],
+      "image": "images/anago.jpg"
+    },
+    {
+      "id": "ika",
+      "name": "いか",
+      "category": "nigiri",
+      "price": 220,
+      "cost": 70,
+      "profitRate": 0.68,
+      "allergens": [
+        "イカ"
+      ],
+      "targets": [
+        "adult"
+      ],
+      "image": "images/ika.jpg"
+    },
+    {
+      "id": "hotate",
+      "name": "ほたて",
+      "category": "nigiri",
+      "price": 320,
+      "cost": 105,
+      "profitRate": 0.67,
+      "allergens": [
+        "貝類"
+      ],
+      "targets": [
+        "adult",
+        "女性"
+      ],
+      "image": "images/hotate.jpg"
+    },
+    {
+      "id": "akagai",
+      "name": "赤貝",
+      "category": "nigiri",
+      "price": 380,
+      "cost": 125,
+      "profitRate": 0.67,
+      "allergens": [
+        "貝類"
+      ],
+      "targets": [
+        "adult"
+      ],
+      "image": "images/akagai.jpg"
+    },
+    {
+      "id": "ikura",
+      "name": "いくら軍艦",
+      "category": "gunkan",
+      "price": 480,
+      "cost": 160,
+      "profitRate": 0.67,
+      "allergens": [
+        "イクラ"
+      ],
+      "targets": [
+        "adult"
+      ],
+      "image": "images/ikura.jpg"
+    },
+    {
+      "id": "uni",
+      "name": "うに軍艦",
+      "category": "gunkan",
+      "price": 680,
+      "cost": 230,
+      "profitRate": 0.66,
+      "allergens": [],
+      "targets": [
+        "adult"
+      ],
+      "image": "images/uni.jpg"
+    },
+    {
+      "id": "shirako",
+      "name": "白子ポン酢軍艦",
+      "category": "gunkan",
+      "price": 450,
+      "cost": 145,
+      "profitRate": 0.68,
+      "allergens": [],
+      "targets": [
+        "adult",
+        "女性"
+      ],
+      "image": "images/shirako.jpg",
+      "season": "winter",
+      "storage": "鮮度が落ちやすいため仕入れ当日に使い切る。ポン酢の柑橘にオレンジを含むか表示を確認する。"
+    },
+    {
+      "id": "negitoro",
+      "name": "ねぎとろ巻",
+      "category": "gunkan",
+      "price": 200,
+      "cost": 115,
+      "profitRate": 0.42,
+      "allergens": [],
+      "targets": [
+        "kids"
+      ],
+      "image": "images/negitoro.jpg",
+      "note": "自家製の場合。市販のねぎとろは大豆などを含むことがあるため表示を確認する。"
+    },
+    {
+      "id": "kappa",
+      "name": "かっぱ巻",
+      "category": "gunkan",
+      "price": 100,
+      "cost": 55,
+      "profitRate": 0.45,
+      "allergens": [],
+      "targets": [
+        "kids"
+      ],
+      "image": "images/kappa.jpg"
+    },
+    {
+      "id": "namaham",
+      "name": "生ハム握り",
+      "category": "special",
+      "price": 420,
+      "cost": 135,
+      "profitRate": 0.68,
+      "allergens": [
+        "豚肉"
+      ],
+      "targets": [
+        "adult",
+        "女性"
+      ],
+      "image": "images/namaham.jpg",
+      "storage": "開封後は乾燥と脂の酸化が早い。ラップを密着させて冷蔵し、2〜3日で使い切る。"
+    },
+    {
+      "id": "iberico",
+      "name": "イベリコ豚の炙り",
+      "category": "special",
+      "price": 420,
+      "cost": 135,
+      "profitRate": 0.68,
+      "allergens": [
+        "豚肉"
+      ],
+      "targets": [
+        "adult",
+        "男性"
+      ],
+      "image": "images/iberico.jpg",
+      "storage": "豚肉は生食不可。低温調理で中心まで加熱してから表面を炙る。"
+    },
+    {
+      "id": "aburi_wagyu",
+      "name": "炙り和牛軍艦",
+      "category": "special",
+      "price": 620,
+      "cost": 200,
+      "profitRate": 0.68,
+      "allergens": [
+        "牛肉"
+      ],
+      "targets": [
+        "adult",
+        "男性"
+      ],
+      "image": "images/aburi_wagyu.jpg",
+      "storage": "生食用の規格基準を満たさない牛肉のため、必ず炙って提供する。"
+    },
+    {
+      "id": "basashi",
+      "name": "馬刺し握り",
+      "category": "special",
+      "price": 500,
+      "cost": 160,
+      "profitRate": 0.68,
+      "allergens": [],
+      "targets": [
+        "adult",
+        "男性"
+      ],
+      "image": "images/basashi.jpg",
+      "storage": "寄生虫（ザルコシスティス）対策として冷凍処理済みのものを仕入れる。"
+    },
+    {
+      "id": "foie_gras",
+      "name": "フォアグラの炙り",
+      "category": "special",
+      "price": 750,
+      "cost": 245,
+      "profitRate": 0.67,
+      "allergens": [],
+      "targets": [
+        "adult"
+      ],
+      "image": "images/foie_gras.jpg",
+      "storage": "冷凍保管。半解凍で切ると崩れにくい。"
+    },
+    {
+      "id": "kamo",
+      "name": "鴨ロース握り（オレンジソースを添えて）",
+      "category": "special",
+      "price": 450,
+      "cost": 145,
+      "profitRate": 0.68,
+      "allergens": [
+        "オレンジ"
+      ],
+      "targets": [
+        "adult",
+        "男性"
+      ],
+      "image": "images/kamo.jpg",
+      "storage": "低温調理で中心温度を管理する。"
+    },
+    {
+      "id": "chawanmushi",
+      "name": "茶碗蒸し",
+      "category": "side",
+      "price": 250,
+      "cost": 140,
+      "profitRate": 0.44,
+      "allergens": [
+        "タマゴ",
+        "エビ"
+      ],
+      "targets": [
+        "kids"
+      ],
+      "image": "images/chawanmushi.jpg"
+    },
+    {
+      "id": "udon",
+      "name": "かけうどん",
+      "category": "side",
+      "price": 300,
+      "cost": 170,
+      "profitRate": 0.43,
+      "allergens": [
+        "小麦"
+      ],
+      "targets": [
+        "kids"
+      ],
+      "image": "images/udon.jpg"
+    },
+    {
+      "id": "miso",
+      "name": "味噌汁",
+      "category": "side",
+      "price": 180,
+      "cost": 60,
+      "profitRate": 0.67,
+      "allergens": [
+        "大豆"
+      ],
+      "targets": [],
+      "image": "images/miso.jpg"
+    }
   ]
 }

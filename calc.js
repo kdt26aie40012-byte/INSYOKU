@@ -12,27 +12,62 @@
   const STORAGE_KEY_MENU = "hanazono_menu";
   const STORAGE_KEY_ORDER = "hanazono_order";
 
+  // メニューの区切り（表示順）
+  const CATEGORIES = [
+    { id: "maguro", name: "まぐろ" },
+    { id: "nigiri", name: "にぎり" },
+    { id: "gunkan", name: "軍艦・巻物" },
+    { id: "special", name: "創作にぎり" },
+    { id: "side", name: "サイド" },
+  ];
+
   // メニュー：名前と値段を組み合わせて保存する（すしは1皿2貫）
-  // image：写真（images/ 内）/ allergens：含まれるアレルゲン / targets：おすすめ対象（年代・性別）
+  // category：区切り / allergens：含まれるアレルゲン / photo: false にすると「写真準備中」
+  // targets：おすすめ対象
+  //   kids＝子供向け、adult＝大人向け、男性＝肉、女性＝さわやかなもの
+  // cost：原価（お客さんには表示しない）
+  //   子供向けは薄利多売（原価率およそ55〜60%）、大人向けは利益を多く（原価率およそ30〜35%）
   const MENU = [
-    { id: "maguro", name: "まぐろ", price: 220, allergens: [], targets: ["middle", "senior", "男性"] },
-    { id: "otoro", name: "大とろ", price: 480, allergens: [], targets: ["middle", "senior", "男性"] },
-    { id: "salmon", name: "サーモン", price: 180, allergens: ["サケ"], targets: ["kids", "young", "女性"] },
-    { id: "hamachi", name: "はまち", price: 220, allergens: [], targets: ["middle", "senior"] },
-    { id: "ebi", name: "えび", price: 180, allergens: ["エビ"], targets: ["kids", "young"] },
-    { id: "ika", name: "いか", price: 180, allergens: ["イカ"], targets: ["senior", "男性"] },
-    { id: "tamago", name: "玉子", price: 120, allergens: ["タマゴ"], targets: ["kids", "女性"] },
-    { id: "ikura", name: "いくら軍艦", price: 380, allergens: ["イクラ"], targets: ["young", "女性"] },
-    { id: "uni", name: "うに軍艦", price: 480, allergens: [], targets: ["middle", "男性"] },
-    { id: "negitoro", name: "ねぎとろ巻", price: 260, allergens: [], targets: ["young", "男性"] },
-    { id: "kappa", name: "かっぱ巻", price: 150, allergens: [], targets: ["kids", "young", "女性"] },
-    { id: "chawanmushi", name: "茶碗蒸し", price: 320, allergens: ["タマゴ", "エビ"], targets: ["kids", "senior", "女性"] },
-    { id: "udon", name: "かけうどん", price: 380, allergens: ["小麦"], targets: ["kids", "senior"] },
-    { id: "miso", name: "味噌汁", price: 200, allergens: ["大豆"], targets: ["middle", "senior"] },
-  ].map((m) => Object.assign({ image: "images/" + m.id + ".jpg" }, m));
+    // まぐろ
+    { id: "maguro", category: "maguro", name: "まぐろ赤身", price: 280, cost: 90, allergens: [], targets: ["adult"] },
+    { id: "chutoro", category: "maguro", name: "中トロ", price: 480, cost: 160, allergens: [], targets: ["adult"] },
+    { id: "otoro", category: "maguro", name: "大トロ", price: 720, cost: 240, allergens: [], targets: ["adult"] },
+    { id: "negitoro_gunkan", category: "maguro", name: "ねぎとろ軍艦", price: 160, cost: 90, allergens: [], targets: ["kids"] },
+    // にぎり
+    { id: "salmon", category: "nigiri", name: "サーモン", price: 180, cost: 100, allergens: ["サケ"], targets: ["kids"] },
+    { id: "ebi", category: "nigiri", name: "えび", price: 180, cost: 100, allergens: ["エビ"], targets: ["kids"] },
+    { id: "tamago", category: "nigiri", name: "玉子", price: 120, cost: 70, allergens: ["タマゴ"], targets: ["kids"] },
+    { id: "hamachi", category: "nigiri", name: "はまち", price: 260, cost: 85, allergens: [], targets: ["adult"] },
+    { id: "buri", category: "nigiri", name: "ぶり", price: 300, cost: 95, allergens: [], targets: ["adult"] },
+    { id: "madai", category: "nigiri", name: "真鯛", price: 300, cost: 95, allergens: [], targets: ["adult", "女性"] },
+    { id: "kohada", category: "nigiri", name: "こはだ", price: 240, cost: 75, allergens: [], targets: ["adult", "女性"] },
+    { id: "engawa", category: "nigiri", name: "えんがわ（炙り）", price: 300, cost: 95, allergens: [], targets: ["adult"] },
+    { id: "anago", category: "nigiri", name: "煮穴子", price: 380, cost: 125, allergens: [], targets: ["adult"] },
+    { id: "ika", category: "nigiri", name: "いか", price: 220, cost: 70, allergens: ["イカ"], targets: ["adult"] },
+    { id: "hotate", category: "nigiri", name: "ほたて", price: 320, cost: 105, allergens: ["貝類"], targets: ["adult", "女性"] },
+    { id: "akagai", category: "nigiri", name: "赤貝", price: 380, cost: 125, allergens: ["貝類"], targets: ["adult"] },
+    // 軍艦・巻物
+    { id: "ikura", category: "gunkan", name: "いくら軍艦", price: 480, cost: 160, allergens: ["イクラ"], targets: ["adult"] },
+    { id: "uni", category: "gunkan", name: "うに軍艦", price: 680, cost: 230, allergens: [], targets: ["adult"] },
+    { id: "shirako", category: "gunkan", name: "白子ポン酢軍艦", price: 450, cost: 145, allergens: [], targets: ["adult", "女性"] },
+    { id: "negitoro", category: "gunkan", name: "ねぎとろ巻", price: 200, cost: 115, allergens: [], targets: ["kids"] },
+    { id: "kappa", category: "gunkan", name: "かっぱ巻", price: 100, cost: 55, allergens: [], targets: ["kids"] },
+    // 創作にぎり
+    { id: "namaham", category: "special", name: "生ハム握り", price: 420, cost: 135, allergens: ["豚肉"], targets: ["adult", "女性"] },
+    { id: "iberico", category: "special", name: "イベリコ豚の炙り", price: 420, cost: 135, allergens: ["豚肉"], targets: ["adult", "男性"] },
+    { id: "aburi_wagyu", category: "special", name: "炙り和牛軍艦", price: 620, cost: 200, allergens: ["牛肉"], targets: ["adult", "男性"] },
+    { id: "basashi", category: "special", name: "馬刺し握り", price: 500, cost: 160, allergens: [], targets: ["adult", "男性"] },
+    { id: "foie_gras", category: "special", name: "フォアグラの炙り", price: 750, cost: 245, allergens: [], targets: ["adult"] },
+    { id: "kamo", category: "special", name: "鴨ロース握り（オレンジソースを添えて）", price: 450, cost: 145, allergens: ["オレンジ"], targets: ["adult", "男性"] },
+    // サイド
+    { id: "chawanmushi", category: "side", name: "茶碗蒸し", price: 250, cost: 140, allergens: ["タマゴ", "エビ"], targets: ["kids"] },
+    { id: "udon", category: "side", name: "かけうどん", price: 300, cost: 170, allergens: ["小麦"], targets: ["kids"] },
+    { id: "miso", category: "side", name: "味噌汁", price: 180, cost: 60, allergens: ["大豆"], targets: [] },
+  ].map((m) => Object.assign({}, m, { image: m.photo === false ? null : "images/" + m.id + ".jpg" }));
 
   // アレルギーのチェックシートの項目
-  const ALLERGENS = ["エビ", "カニ", "タマゴ", "小麦", "乳製品", "そば", "イカ", "イクラ", "サケ", "サバ", "貝類", "大豆", "山芋", "ゴマ"];
+  const ALLERGENS = ["エビ", "カニ", "タマゴ", "小麦", "乳製品", "そば", "イカ", "イクラ", "サケ", "サバ", "貝類", "大豆", "山芋", "ゴマ",
+    "豚肉", "牛肉", "オレンジ"];
 
   // ---------- 入力チェック ----------
 
@@ -63,20 +98,18 @@
 
   // ---------- おすすめ・アレルゲン ----------
 
+  // 中学生以下（15歳以下）は子供向け、それ以上は大人向け
   function ageGroup(age) {
     if (age === null || age === undefined) return null;
-    if (age < 13) return "kids";
-    if (age < 30) return "young";
-    if (age < 60) return "middle";
-    return "senior";
+    return age <= 15 ? "kids" : "adult";
   }
 
-  // 年齢・性別に合うメニューを一致数の多い順に返す（どちらも NO なら定番を返す）
-  function getRecommendations(menu, age, gender, limit = 4) {
+  // 年代（2点）と性別（1点）が合うメニューを点数の高い順に返す（どちらも NO なら定番を返す）
+  function getRecommendations(menu, age, gender, limit = 6) {
     const group = ageGroup(age);
     const g = gender === "NO" ? null : gender;
     if (!group && !g) {
-      return menu.filter((m) => ["maguro", "salmon", "otoro", "ikura"].includes(m.id));
+      return menu.filter((m) => ["maguro", "chutoro", "salmon", "ikura"].includes(m.id));
     }
     return menu
       .map((m, i) => ({
@@ -87,6 +120,18 @@
       .sort((a, b) => b.score - a.score || a.i - b.i)
       .slice(0, limit)
       .map((x) => x.m);
+  }
+
+  // 利益率（(値段 − 原価) ÷ 値段）
+  function profitRate(m) {
+    return (m.price - m.cost) / m.price;
+  }
+
+  // メニューを区切りごとにまとめる（中身のない区切りは除く）
+  function groupByCategory(menu) {
+    return CATEGORIES
+      .map((c) => ({ id: c.id, name: c.name, items: menu.filter((m) => m.category === c.id) }))
+      .filter((c) => c.items.length > 0);
   }
 
   // 選択されたアレルギーを1つでも含むメニューを除外する
@@ -145,9 +190,9 @@
   }
 
   return {
-    MENU, ALLERGENS, GENDERS, STORAGE_KEY_MENU, STORAGE_KEY_ORDER,
+    MENU, CATEGORIES, ALLERGENS, GENDERS, STORAGE_KEY_MENU, STORAGE_KEY_ORDER,
     isAllowedAgeTyping, validateAge, validateGender, validateQuantity,
-    ageGroup, getRecommendations, excludeAllergens,
+    ageGroup, getRecommendations, excludeAllergens, profitRate, groupByCategory,
     addToOrder, calcBill, formatYen,
     saveMenu, loadOrder, saveOrder, clearOrder,
   };

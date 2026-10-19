@@ -1,35 +1,100 @@
 {
   "updatedAt": "2026-10-19",
-  "note": "消費者庁の食品表示基準に基づくアレルゲン一覧。品目は改正されることがあるため、運用前に最新情報を確認すること。",
+  "note": "アレルゲンなしタブのチェックシートに表示する項目（calc.js の ALLERGENS と同じ）。",
   "allergens": [
-    { "id": "shrimp", "name": "えび", "level": "required" },
-    { "id": "crab", "name": "かに", "level": "required" },
-    { "id": "walnut", "name": "くるみ", "level": "required" },
-    { "id": "wheat", "name": "小麦", "level": "required" },
-    { "id": "buckwheat", "name": "そば", "level": "required" },
-    { "id": "egg", "name": "卵", "level": "required" },
-    { "id": "milk", "name": "乳", "level": "required" },
-    { "id": "peanut", "name": "落花生", "level": "required" },
-
-    { "id": "almond", "name": "アーモンド", "level": "recommended" },
-    { "id": "abalone", "name": "あわび", "level": "recommended" },
-    { "id": "squid", "name": "いか", "level": "recommended" },
-    { "id": "salmon_roe", "name": "いくら", "level": "recommended" },
-    { "id": "orange", "name": "オレンジ", "level": "recommended" },
-    { "id": "cashew", "name": "カシューナッツ", "level": "recommended" },
-    { "id": "kiwi", "name": "キウイフルーツ", "level": "recommended" },
-    { "id": "beef", "name": "牛肉", "level": "recommended" },
-    { "id": "sesame", "name": "ごま", "level": "recommended" },
-    { "id": "salmon", "name": "さけ", "level": "recommended" },
-    { "id": "mackerel", "name": "さば", "level": "recommended" },
-    { "id": "soybean", "name": "大豆", "level": "recommended" },
-    { "id": "chicken", "name": "鶏肉", "level": "recommended" },
-    { "id": "banana", "name": "バナナ", "level": "recommended" },
-    { "id": "pork", "name": "豚肉", "level": "recommended" },
-    { "id": "macadamia", "name": "マカダミアナッツ", "level": "recommended" },
-    { "id": "peach", "name": "もも", "level": "recommended" },
-    { "id": "yam", "name": "やまいも", "level": "recommended" },
-    { "id": "apple", "name": "りんご", "level": "recommended" },
-    { "id": "gelatin", "name": "ゼラチン", "level": "recommended" }
+    {
+      "name": "エビ",
+      "usedBy": [
+        "ebi",
+        "chawanmushi"
+      ]
+    },
+    {
+      "name": "カニ",
+      "usedBy": []
+    },
+    {
+      "name": "タマゴ",
+      "usedBy": [
+        "tamago",
+        "chawanmushi"
+      ]
+    },
+    {
+      "name": "小麦",
+      "usedBy": [
+        "udon"
+      ]
+    },
+    {
+      "name": "乳製品",
+      "usedBy": []
+    },
+    {
+      "name": "そば",
+      "usedBy": []
+    },
+    {
+      "name": "イカ",
+      "usedBy": [
+        "ika"
+      ]
+    },
+    {
+      "name": "イクラ",
+      "usedBy": [
+        "ikura"
+      ]
+    },
+    {
+      "name": "サケ",
+      "usedBy": [
+        "salmon"
+      ]
+    },
+    {
+      "name": "サバ",
+      "usedBy": []
+    },
+    {
+      "name": "貝類",
+      "usedBy": [
+        "hotate",
+        "akagai"
+      ]
+    },
+    {
+      "name": "大豆",
+      "usedBy": [
+        "miso"
+      ]
+    },
+    {
+      "name": "山芋",
+      "usedBy": []
+    },
+    {
+      "name": "ゴマ",
+      "usedBy": []
+    },
+    {
+      "name": "豚肉",
+      "usedBy": [
+        "namaham",
+        "iberico"
+      ]
+    },
+    {
+      "name": "牛肉",
+      "usedBy": [
+        "aburi_wagyu"
+      ]
+    },
+    {
+      "name": "オレンジ",
+      "usedBy": [
+        "kamo"
+      ]
+    }
   ]
 }

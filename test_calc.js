@@ -69,6 +69,27 @@ test("おすすめ：年代に合うものが返る", () => {
   recos.forEach((m) => assert.ok(m.targets.includes("kids")));
 });
 
+test("年代の区分：15歳以下は子供向け、16歳以上は大人向け", () => {
+  assert.strictEqual(C.ageGroup(15), "kids");
+  assert.strictEqual(C.ageGroup(16), "adult");
+  assert.strictEqual(C.ageGroup(null), null);
+});
+
+test("おすすめ：大人の男性には肉のメニューが上位に来る", () => {
+  const top = C.getRecommendations(C.MENU, 35, "男性").slice(0, 4).map((m) => m.id);
+  ["iberico", "aburi_wagyu", "basashi", "kamo"].forEach((id) => assert.ok(top.includes(id)));
+});
+
+test("おすすめ：大人の女性には白子ポン酢などさわやかなものが上位に来る", () => {
+  const top = C.getRecommendations(C.MENU, 35, "女性").slice(0, 5).map((m) => m.id);
+  assert.ok(top.includes("shirako"));
+  top.forEach((id) => assert.ok(C.MENU.find((m) => m.id === id).targets.includes("女性")));
+});
+
+test("おすすめ：子供には大人向けのメニューが出ない", () => {
+  C.getRecommendations(C.MENU, 10, "男性").forEach((m) => assert.ok(!m.targets.includes("adult")));
+});
+
 test("おすすめ：両方NOでも定番が返る", () => {
   assert.ok(C.getRecommendations(C.MENU, null, "NO").length > 0);
 });
@@ -90,6 +111,18 @@ test("小麦を選ぶとうどんが除外される", () => {
   assert.strictEqual(list.length, C.MENU.length - 1);
 });
 
+test("追加したアレルゲン（豚肉・牛肉・オレンジ・貝類）で除外できる", () => {
+  const ids = (a) => C.excludeAllergens(C.MENU, [a]).map((m) => m.id);
+  assert.ok(!ids("豚肉").includes("iberico") && !ids("豚肉").includes("namaham"));
+  assert.ok(!ids("牛肉").includes("aburi_wagyu"));
+  assert.ok(!ids("オレンジ").includes("kamo"));
+  assert.ok(!ids("貝類").includes("hotate") && !ids("貝類").includes("akagai"));
+});
+
+test("メニューのidは重複しない", () => {
+  assert.strictEqual(new Set(C.MENU.map((m) => m.id)).size, C.MENU.length);
+});
+
 test("アレルギー未選択なら全メニューを表示", () => {
   assert.strictEqual(C.excludeAllergens(C.MENU, []).length, C.MENU.length);
 });
@@ -100,12 +133,12 @@ test("メニューのアレルゲンはすべてチェックシートの項目�
 
 test("注文の追加と合計金額の計算", () => {
   let order = {};
-  order = C.addToOrder(order, "maguro", 2); // 220 × 2
-  order = C.addToOrder(order, "miso", 1);   // 200
+  order = C.addToOrder(order, "maguro", 2); // 280 × 2
+  order = C.addToOrder(order, "miso", 1);   // 180
   order = C.addToOrder(order, "maguro", 1); // 同じメニューは個数を足す
   const bill = C.calcBill(C.MENU, order);
   assert.strictEqual(bill.items.find((i) => i.id === "maguro").qty, 3);
-  assert.strictEqual(bill.total, 220 * 3 + 200);
+  assert.strictEqual(bill.total, 280 * 3 + 180);
 });
 
 test("不正な数量は注文できない", () => {
@@ -115,7 +148,7 @@ test("不正な数量は注文できない", () => {
 test("存在しないメニューは会計に含めない", () => {
   const bill = C.calcBill(C.MENU, { unknown: 3, miso: 2 });
   assert.strictEqual(bill.items.length, 1);
-  assert.strictEqual(bill.total, 400);
+  assert.strictEqual(bill.total, 360);
 });
 
 test("注文なしの会計は0円", () => {
@@ -141,11 +174,30 @@ test("メニューは名前と値段の組で保存される", () => {
   const s = memoryStorage();
   C.saveMenu(s, C.MENU);
   const saved = JSON.parse(s.getItem(C.STORAGE_KEY_MENU));
-  assert.deepStrictEqual(saved[0], { name: "まぐろ", price: 220 });
+  assert.deepStrictEqual(saved[0], { name: "まぐろ赤身", price: 280 });
+});
+
+test("写真準備中のメニューはない", () => {
+  C.MENU.forEach((m) => assert.ok(m.image));
 });
 
 test("すべてのメニューに写真が設定されている", () => {
-  C.MENU.forEach((m) => assert.strictEqual(m.image, `images/${m.id}.jpg`));
+  C.MENU.forEach((m) => assert.strictEqual(m.image, m.photo === false ? null : `images/${m.id}.jpg`));
+});
+
+test("値段設定：子供向けは薄利、大人向けは利益を多く取る", () => {
+  const kids = C.MENU.filter((m) => m.targets.includes("kids")).map(C.profitRate);
+  const adult = C.MENU.filter((m) => m.targets.includes("adult")).map(C.profitRate);
+  assert.ok(Math.max(...kids) < Math.min(...adult));
+  assert.ok(Math.max(...kids) <= 0.5);
+  assert.ok(Math.min(...adult) >= 0.6);
+});
+
+test("すべてのメニューが区切りに属し、区切りごとにまとめられる", () => {
+  const ids = C.CATEGORIES.map((c) => c.id);
+  C.MENU.forEach((m) => assert.ok(ids.includes(m.category)));
+  const total = C.groupByCategory(C.MENU).reduce((n, c) => n + c.items.length, 0);
+  assert.strictEqual(total, C.MENU.length);
 });
 
 test("金額の表示形式", () => {

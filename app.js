@@ -49,35 +49,56 @@
     return C.MENU;
   }
 
+  // 写真がないメニューは「写真準備中」を表示する
+  function thumbHtml(m, size = "") {
+    if (!m.image) return `<div class="thumb noimg ${size}">写真準備中</div>`;
+    return `<img class="thumb ${size}" src="${m.image}" alt="" loading="lazy">`;
+  }
+
   function renderMenu() {
     document.querySelectorAll(".tab").forEach((t) => {
       t.classList.toggle("active", t.dataset.tab === state.tab);
     });
     renderAllergyChecks();
-    const grid = $("menu-grid");
-    grid.innerHTML = "";
+    const area = $("menu-grid");
+    area.innerHTML = "";
     const items = currentItems();
     if (items.length === 0) {
-      grid.innerHTML = '<p class="empty">該当するメニューがありません</p>';
+      area.innerHTML = '<p class="empty">該当するメニューがありません</p>';
       return;
     }
-    items.forEach((m) => {
-      const card = document.createElement("button");
-      card.type = "button";
-      card.className = "card";
-      card.innerHTML = `
-        <div class="thumb-wrap">
-          <img class="thumb" src="${m.image}" alt="" loading="lazy">
-          ${m.allergens.length ? `<span class="allergen-badge">${m.allergens.join("・")}</span>` : ""}
-        </div>
-        <div class="card-body">
-          <div class="card-name"></div>
-          <div class="card-price">${C.formatYen(m.price)}</div>
-        </div>`;
-      card.querySelector(".card-name").textContent = m.name;
-      card.addEventListener("click", () => openQty(m));
-      grid.appendChild(card);
+    // おすすめは合う順に並べ、それ以外は区切りごとに見出しを付けて表示する
+    const sections = state.tab === "reco" ? [{ name: "", items }] : C.groupByCategory(items);
+    sections.forEach((sec) => {
+      if (sec.name) {
+        const h = document.createElement("h2");
+        h.className = "cat-title";
+        h.textContent = sec.name;
+        area.appendChild(h);
+      }
+      const grid = document.createElement("div");
+      grid.className = "cat-grid";
+      sec.items.forEach((m) => grid.appendChild(cardEl(m)));
+      area.appendChild(grid);
     });
+  }
+
+  function cardEl(m) {
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "card";
+    card.innerHTML = `
+      <div class="thumb-wrap">
+        ${thumbHtml(m)}
+        ${m.allergens.length ? `<span class="allergen-badge">${m.allergens.join("・")}</span>` : ""}
+      </div>
+      <div class="card-body">
+        <div class="card-name"></div>
+        <div class="card-price">${C.formatYen(m.price)}</div>
+      </div>`;
+    card.querySelector(".card-name").textContent = m.name;
+    card.addEventListener("click", () => openQty(m));
+    return card;
   }
 
   // アレルゲンなしタブのチェックシート
@@ -158,8 +179,7 @@
   function openQty(m) {
     state.selected = m;
     state.qty = 1;
-    $("qty-thumb").src = m.image;
-    $("qty-thumb").alt = m.name;
+    $("qty-thumb").innerHTML = thumbHtml(m, "big");
     $("qty-name").textContent = m.name;
     $("qty-price").textContent = C.formatYen(m.price);
     $("qty-value").textContent = state.qty;

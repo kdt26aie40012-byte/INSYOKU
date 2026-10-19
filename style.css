@@ -66,7 +66,12 @@ body {
 }
 .tab.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
-.menu-grid {
+.cat-title {
+  font-size: 1.15rem; margin: 1.4rem 0 0.7rem; padding-left: 0.6rem;
+  border-left: 4px solid var(--accent);
+}
+.cat-title:first-child { margin-top: 0.2rem; }
+.cat-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 1rem;
@@ -98,6 +103,11 @@ body {
 .check:has(input:checked) { background: #fde8ea; border-color: var(--accent); color: var(--accent); }
 .thumb {
   display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: #eee;
+}
+.thumb.noimg {
+  display: flex; align-items: center; justify-content: center;
+  background: repeating-linear-gradient(45deg, #f1ebe4, #f1ebe4 10px, #ece4db 10px, #ece4db 20px);
+  color: var(--muted); font-size: 0.9rem; letter-spacing: 0.1em;
 }
 .thumb.big { width: 260px; max-width: 100%; margin: 0 auto; border-radius: 12px; }
 .card-body { padding: 0.6rem 0.8rem 0.8rem; }
